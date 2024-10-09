@@ -35,6 +35,9 @@ return { -- LSP Configuration & Plugins
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
+        -- for development C & C++
+        map('<leader>sh', '<cmd>ClangdSwitchSourceHeader<CR>', 'Switch Header/Source')
+
         -- Jump to the definition of the word under your cursor.
         --  This is where a variable was first declared, or where a function is defined, etc.
         --  To jump back, press <C-T>.
@@ -218,6 +221,18 @@ return { -- LSP Configuration & Plugins
       cssls = {},
       ltex = {},
       texlab = {},
+      clangd = {
+        cmd = {
+          'clangd',
+          '--background-index',
+          '--suggest-missing-includes',
+          '--clang-tidy',
+          '--header-insertion=iwyu',
+        },
+        init_options = {
+          fallbackFlags = { '-std=c++17' },
+        },
+      },
     }
 
     -- Ensure the servers and tools above are installed
@@ -228,6 +243,8 @@ return { -- LSP Configuration & Plugins
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format lua code
+      'clangd',
+      'clang-format',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -243,5 +260,26 @@ return { -- LSP Configuration & Plugins
         end,
       },
     }
+
+    -- Additional configuration for C/C++
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = { 'c', 'cpp', 'objc', 'objcpp' },
+      callback = function()
+        vim.bo.tabstop = 2
+        vim.bo.shiftwidth = 2
+        vim.bo.expandtab = true
+        vim.bo.cindent = true
+        vim.bo.cinoptions = 'g0,i0,j1,(0,ws,Ws,m1'
+      end,
+    })
+
+    -- Configuration for clang-format
+    vim.g.clang_format_style = 'file'
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      pattern = { '*.c', '*.h', '*.cpp', '*.hpp' },
+      callback = function()
+        vim.cmd 'ClangFormat'
+      end,
+    })
   end,
 }
