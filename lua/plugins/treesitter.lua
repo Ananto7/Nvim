@@ -9,6 +9,9 @@ return {
     require('nvim-treesitter.configs').setup {
       -- Add languages to be installed here that you want installed for treesitter
       ensure_installed = {
+        'c',
+        'cpp',
+        'cmake',
         'lua',
         'python',
         'javascript',
@@ -28,7 +31,6 @@ return {
         'graphql',
         'yaml',
         'make',
-        'cmake',
         'markdown',
         'markdown_inline',
         'bash',

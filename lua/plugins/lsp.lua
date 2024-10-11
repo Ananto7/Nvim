@@ -228,9 +228,16 @@ return { -- LSP Configuration & Plugins
           '--suggest-missing-includes',
           '--clang-tidy',
           '--header-insertion=iwyu',
+          '--completion-style=detailed',
+          '--function-arg-placeholders',
+          '--fallback-style=llvm',
         },
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
         init_options = {
-          fallbackFlags = { '-std=c++17' },
+          clangdFileStatus = true,
+          usePlaceholders = true,
+          completeUnimported = true,
+          semanticHighlighting = true,
         },
       },
     }
@@ -260,26 +267,5 @@ return { -- LSP Configuration & Plugins
         end,
       },
     }
-
-    -- Additional configuration for C/C++
-    vim.api.nvim_create_autocmd('FileType', {
-      pattern = { 'c', 'cpp', 'objc', 'objcpp' },
-      callback = function()
-        vim.bo.tabstop = 2
-        vim.bo.shiftwidth = 2
-        vim.bo.expandtab = true
-        vim.bo.cindent = true
-        vim.bo.cinoptions = 'g0,i0,j1,(0,ws,Ws,m1'
-      end,
-    })
-
-    -- Configuration for clang-format
-    vim.g.clang_format_style = 'file'
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      pattern = { '*.c', '*.h', '*.cpp', '*.hpp' },
-      callback = function()
-        vim.cmd 'ClangFormat'
-      end,
-    })
   end,
 }
