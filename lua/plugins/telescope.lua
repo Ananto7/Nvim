@@ -20,7 +20,7 @@ return {
     'nvim-tree/nvim-web-devicons',
   },
   config = function()
-    local telescope = require 'telescope'
+    -- local telescope = require 'telescope'
     local actions = require 'telescope.actions'
     local builtin = require 'telescope.builtin'
 

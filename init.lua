@@ -1,5 +1,5 @@
-require 'core.options' -- Load general options
-require 'core.keymaps' -- Load general keymaps
+require 'core.options'  -- Load general options
+require 'core.keymaps'  -- Load general keymaps
 require 'core.snippets' -- Custom code snippets
 
 -- Install package manager
@@ -32,6 +32,7 @@ require('lazy').setup({
   require 'plugins.telescope',
   require 'plugins.treesitter',
   require 'plugins.lsp',
+  require 'plugins.dap',
   require 'plugins.autocompletion',
   require 'plugins.none-ls',
   require 'plugins.lualine',
@@ -46,8 +47,8 @@ require('lazy').setup({
   require 'plugins.database',
   require 'plugins.misc',
   require 'plugins.harpoon',
-  require 'plugins.avante',
-  require 'plugins.chatgpt',
+  --require 'plugins.avante',
+  --require 'plugins.chatgpt',
   require 'plugins.aerial',
 
   -- Adding Mini.icons
